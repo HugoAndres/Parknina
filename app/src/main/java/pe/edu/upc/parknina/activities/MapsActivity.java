@@ -31,7 +31,7 @@ import com.tiancaicc.springfloatingactionmenu.SpringFloatingActionMenu;
 
 import pe.edu.upc.parknina.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, android.location.LocationListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, android.location.LocationListener {
 
     private GoogleMap mMap;
 
@@ -42,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             GoogleMap.MAP_TYPE_TERRAIN,
             GoogleMap.MAP_TYPE_NONE
     };
-    private int curMapTypeIndex = 3;
+    private int curMapTypeIndex = 1;
     static final int wait_time = 1000 * 60 * 2; //two minutes
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public static final int MY_PERMISSIONS_ENABLE_LOCATION = 98;
@@ -66,11 +66,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         new SpringFloatingActionMenu.Builder(this)
                 .fab(fab)
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_account_box_24dp, "Parking Lot", R.color.colorIcons, this)
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_arrow_back_black_24dp, "Parking Ad", R.color.colorIcons, this)
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_invert_colors_black_24dp, "Parking Book", R.color.colorIcons, this)
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_settings_24dp, "Configuration", R.color.colorIcons, this)
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_check_24dp, "Credit Card", R.color.colorIcons, this)
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_account_box_24dp, "Parking Lot", R.color.colorIcons, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_arrow_back_black_24dp, "Parking Ad", R.color.colorIcons, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_invert_colors_black_24dp, "Parking Book", R.color.colorIcons, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_exit_to_app_24dp, "Sign Out", R.color.colorIcons, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_check_24dp, "Credit Card", R.color.colorIcons, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_settings_24dp, "Configuration", R.color.colorIcons, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
                 .animationType(SpringFloatingActionMenu.ANIMATION_TYPE_TUMBLR)
                 .revealColor(R.color.colorPrimary)
                 .gravity(Gravity.RIGHT | Gravity.BOTTOM)
@@ -112,12 +143,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 onLocationChanged(location);
             }
         }
-    }
-
-    //Only for the Floating Action Buttons
-    public void onClick(View v) {
-        MenuItemView menuItemView = (MenuItemView) v;
-        Toast.makeText(this, menuItemView.getLabelTextView().getText(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -192,10 +217,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
                             Criteria criteria = new Criteria();
                             String bestProvider = locationManager.getBestProvider(criteria, true);
+                            locationManager.requestLocationUpdates(bestProvider, 2000, 0, this); // REMEMBER: It's necessary put first requestLocationUpdates() for method getLastKnownLocation() works
                             Location location = locationManager.getLastKnownLocation(bestProvider);
                             if (location != null) {
+                                mMap.setMapType(mapTypes[curMapTypeIndex]);
+                                mMap.setTrafficEnabled(true);
+                                mMap.setMyLocationEnabled(true);
+                                mMap.getUiSettings().setZoomGesturesEnabled(true);
+                                mMap.getUiSettings().setZoomControlsEnabled(false);
+                                mMap.getUiSettings().setCompassEnabled(true);
+                                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                                mMap.getUiSettings().setRotateGesturesEnabled(false);
                                 onLocationChanged(location);
-                                locationManager.requestLocationUpdates(bestProvider, 2000, 0, this);
                             }
                         }
                     }

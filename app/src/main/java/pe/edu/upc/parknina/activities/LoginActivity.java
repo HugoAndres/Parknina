@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         emailTextInputEditText = (TextInputEditText) findViewById(R.id.emailTextInputEditText);
         passwordTextInputEditText = (TextInputEditText) findViewById(R.id.passwordTextInputEditText);
         Button logInButton = (Button) findViewById(R.id.logInButton);
@@ -127,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));
                 }
                 else if (jsonResponse.getString("StatusCode").equals("1000")) {
-                    Toast.makeText(getBaseContext(), "Email and password incorrect. Please, try again.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Email and password incorrect. Please, try again.", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -137,23 +138,23 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validate(){
         if (emailTextInputEditText.getText().toString().trim().equals("") && passwordTextInputEditText.getText().toString().trim().equals("")) {
-            Toast.makeText(getBaseContext(), "Please, write your email and password.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Please, write your email and password.", Toast.LENGTH_SHORT).show();
             return false;
         }
         else if (emailTextInputEditText.getText().toString().trim().equals("")) {
-            Toast.makeText(getBaseContext(), "Please, write your email.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Please, write your email.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        else if (emailTextInputEditText.getText().toString().contains("@")) {
-            Toast.makeText(getBaseContext(), "This email address is invalid.", Toast.LENGTH_LONG).show();
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailTextInputEditText.getText()).matches()) {
+            Toast.makeText(getBaseContext(), "This email address is invalid.", Toast.LENGTH_SHORT).show();
             return false;
         }
         else if (passwordTextInputEditText.getText().toString().trim().equals("")) {
-            Toast.makeText(getBaseContext(), "Please, write your password.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Please, write your password.", Toast.LENGTH_SHORT).show();
             return false;
         }
         else if (passwordTextInputEditText.getText().length() <= 4) {
-            Toast.makeText(getBaseContext(), "This password is to short.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "This password is to short.", Toast.LENGTH_SHORT).show();
             return false;
         }
         else {
