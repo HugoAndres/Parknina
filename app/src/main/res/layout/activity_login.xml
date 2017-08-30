@@ -41,7 +41,7 @@
                 style="@style/Widget.LoginTextEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Email"
+                android:hint="@string/textInputEditText_email"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 style="@style/Widget.LoginTextEdit"
-                android:hint="Password"
+                android:hint="@string/textInputEditText_password"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 

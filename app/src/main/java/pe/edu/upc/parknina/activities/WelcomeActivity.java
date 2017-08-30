@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
 
@@ -35,6 +36,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         public void run() {
                             startCircularProgressButton.setProgress(100);
                             startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                            finish();
                         }
                     }, 2000);
                 }

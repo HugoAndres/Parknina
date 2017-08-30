@@ -1,5 +1,6 @@
 package pe.edu.upc.parknina.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -24,23 +25,28 @@ import pe.edu.upc.parknina.networks.ParkninaAsyncTask;
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText emailTextInputEditText;
     private TextInputEditText passwordTextInputEditText;
+    //REMEMBER: Buttons has to be public yo be able to use in class MyAsyncTask
+    public Button logInButton;
+    public Button signUpButton;
+    public Button guestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         emailTextInputEditText = (TextInputEditText) findViewById(R.id.emailTextInputEditText);
         passwordTextInputEditText = (TextInputEditText) findViewById(R.id.passwordTextInputEditText);
-        Button logInButton = (Button) findViewById(R.id.logInButton);
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
-        Button guestButton = (Button) findViewById(R.id.guestButton);
+         logInButton = (Button) findViewById(R.id.logInButton);
+        signUpButton = (Button) findViewById(R.id.signUpButton);
+        guestButton = (Button) findViewById(R.id.guestButton);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validate()) {
+                    logInButton.setEnabled(false);
+
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("email", emailTextInputEditText.getText().toString());
@@ -64,7 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), MapsActivity.class));
+                startActivity(new Intent(v.getContext(), GuestMapsActivity.class));
+                finish();
             }
         });
     }
@@ -75,6 +82,17 @@ public class LoginActivity extends AppCompatActivity {
         private String myData = null;
         private HttpURLConnection urlConnection = null;
         private InputStream inputStream = null;
+        ProgressDialog progressDialog = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(LoginActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Authenticating...");
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -116,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
             try {
                 if (jsonResponse.getString("StatusCode").equals("200")) {
                     SharedPreferences pref = getApplication().getSharedPreferences("preferences", 0);
@@ -125,15 +142,24 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
                     Log.i("TAG", pref.getString("auth_token", null));
 
-                    startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                    startActivity(new Intent(LoginActivity.this, LoggedMapsActivity.class));
+                    finish();
                 }
                 else if (jsonResponse.getString("StatusCode").equals("1000")) {
                     Toast.makeText(getBaseContext(), "Email and password incorrect. Please, try again.", Toast.LENGTH_SHORT).show();
                 }
+
+                logInButton.setEnabled(true);
+                progressDialog.dismiss();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 
     private boolean validate(){

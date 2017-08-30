@@ -25,13 +25,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.melnykov.fab.FloatingActionButton;
-import com.tiancaicc.springfloatingactionmenu.MenuItemView;
 import com.tiancaicc.springfloatingactionmenu.OnMenuActionListener;
 import com.tiancaicc.springfloatingactionmenu.SpringFloatingActionMenu;
 
 import pe.edu.upc.parknina.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, android.location.LocationListener {
+public class GuestMapsActivity extends FragmentActivity implements OnMapReadyCallback, android.location.LocationListener {
 
     private GoogleMap mMap;
 
@@ -43,17 +42,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             GoogleMap.MAP_TYPE_NONE
     };
     private int curMapTypeIndex = 1;
-    static final int wait_time = 1000 * 60 * 2; //two minutes
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public static final int MY_PERMISSIONS_ENABLE_LOCATION = 98;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_guest_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.googleMap);
+                .findFragmentById(R.id.guestGoogleMap);
         mapFragment.getMapAsync(this);
 
         final FloatingActionButton fab = new FloatingActionButton(this);
@@ -66,34 +64,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         new SpringFloatingActionMenu.Builder(this)
                 .fab(fab)
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_account_box_24dp, "Parking Lot", R.color.colorIcons, new View.OnClickListener() {
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_account_box_24dp, "Parking Lots", R.color.colorIcons, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
                 })
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_arrow_back_black_24dp, "Parking Ad", R.color.colorIcons, new View.OnClickListener() {
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_arrow_back_black_24dp, "Companies", R.color.colorIcons, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
                 })
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_invert_colors_black_24dp, "Parking Book", R.color.colorIcons, new View.OnClickListener() {
+                .addMenuItem(R.color.colorIcons, R.drawable.ic_exit_to_app_24dp, "Log Out", R.color.colorIcons, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                    }
-                })
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_exit_to_app_24dp, "Sign Out", R.color.colorIcons, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                })
-                .addMenuItem(R.color.colorIcons, R.drawable.ic_check_24dp, "Credit Card", R.color.colorIcons, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
+                        startActivity(new Intent(GuestMapsActivity.this, LoginActivity.class));
                     }
                 })
                 .addMenuItem(R.color.colorIcons, R.drawable.ic_settings_24dp, "Configuration", R.color.colorIcons, new View.OnClickListener() {
@@ -153,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng aux = new LatLng(latitude, longitude);
             //mMap.addMarker(new MarkerOptions().position(aux));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(aux));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null); //TODO: Put the last parameter
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1000, null); //TODO: Put the last parameter
         }
     }
 
@@ -172,39 +158,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    /*
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (googleApiClient.isConnected()) {
-            if (checkLocationPermission() && checkGPSState()) {
-                currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
-                double latitude = currentLocation.getLatitude();
-                double longitude = currentLocation.getLongitude();
-
-                LatLng aux = new LatLng(latitude, longitude);
-                mMap.setMapType(mapTypes[curMapTypeIndex]);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(aux));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-                mMap.setTrafficEnabled(true);
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-            }
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getBaseContext(), connectionResult.getErrorCode() + ": " + connectionResult.getErrorMessage(), Toast.LENGTH_LONG).show();
-    }
-    */
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
@@ -258,6 +211,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
     public final boolean checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -267,12 +225,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+                                ActivityCompat.requestPermissions(GuestMapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         }).create()
                         .show();
             } else {
-                ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+                ActivityCompat.requestPermissions(GuestMapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
             }
 
             return false;
@@ -310,5 +268,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return true;
         }
     }
-
 }

@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="pe.edu.upc.parknina.activities.WelcomeActivity"
+            android:name=".activities.WelcomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="pe.edu.upc.parknina.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -55,9 +55,15 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="pe.edu.upc.parknina.activities.MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".activities.LoggedMapsActivity"
+            android:label="@string/title_activity_logged_maps">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pe.edu.upc.parknina.activities.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".activities.GuestMapsActivity"
+            android:label="@string/title_activity_guest_maps">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pe.edu.upc.parknina.activities.LoginActivity" />

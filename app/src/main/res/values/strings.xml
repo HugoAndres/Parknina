@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Parkinina</string>
+    <string name="app_name">Parknina</string>
     <string name="activity_welcome_title">Parknina</string>
     <string name="IndeterminateProgressSample">Indeterminate Progress Sample</string>
     <string name="welcome_button_text">Start</string>
@@ -8,5 +8,10 @@
     <string name="signup_transition_name">signUp</string>
     <string name="login_transition_name">logIn</string>
     <string name="parknina_logo">Parknina Logo</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_logged_maps">Logged Map</string>
+    <string name="Parking_Ad">Parking Ad</string>
+    <string name="Parking_Lot">Parking Lot</string>
+    <string name="textInputEditText_email">Email</string>
+    <string name="textInputEditText_password">Password</string>
+    <string name="title_activity_guest_maps">Guest Map</string>
 </resources>

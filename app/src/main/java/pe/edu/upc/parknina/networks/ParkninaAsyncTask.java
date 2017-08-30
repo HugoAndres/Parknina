@@ -30,9 +30,9 @@ public class ParkninaAsyncTask {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
 
-        return null;
+            return null;
+        }
     }
 
     public static void sendHeadersAndMethod(HttpURLConnection urlConnection, String jsonRequest) {

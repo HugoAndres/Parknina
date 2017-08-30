@@ -2,6 +2,10 @@ package pe.edu.upc.parknina;
 
 import org.junit.Test;
 
+import java.net.HttpURLConnection;
+
+import pe.edu.upc.parknina.networks.ParkninaAsyncTask;
+
 import static org.junit.Assert.*;
 
 /**
