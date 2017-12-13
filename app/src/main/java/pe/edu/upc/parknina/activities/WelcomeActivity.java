@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
+import com.ekalips.fancybuttonproj.FancyButton;
 
 import pe.edu.upc.parknina.R;
 
+//REMEMBER: Not used.
 public class WelcomeActivity extends AppCompatActivity {
-    private CircularProgressButton startCircularProgressButton;
+//    private CircularProgressButton startCircularProgressButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,7 @@ public class WelcomeActivity extends AppCompatActivity {
             actionBar.setTitle(R.string.IndeterminateProgressSample);
         }
 
-        startCircularProgressButton = (CircularProgressButton) findViewById(R.id.startCircularProgressButton);
+        /*startCircularProgressButton = (CircularProgressButton) findViewById(R.id.startCircularProgressButton);
         startCircularProgressButton.setIndeterminateProgressMode(true);
         startCircularProgressButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +47,20 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 else {
                     startCircularProgressButton.setProgress(100);
+                }
+            }
+        });*/
+
+        FancyButton button1 = (FancyButton) findViewById(R.id.btn1);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view instanceof  FancyButton) {
+                    if (((FancyButton)view).isExpanded())
+                        ((FancyButton)view).collapse();
+                    else
+                        ((FancyButton)view).expand();
                 }
             }
         });

@@ -1,15 +1,23 @@
 package pe.edu.upc.parknina.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -23,6 +31,10 @@ import pe.edu.upc.parknina.R;
 import pe.edu.upc.parknina.networks.ParkninaAsyncTask;
 
 public class LoginActivity extends AppCompatActivity {
+    private LinearLayout emailAndPasswordLinearLayout;
+    private LinearLayout logInAndSignUpLinearLayout;
+    private LinearLayout orAndGuestLinearLayout;
+    private ImageView logoImageView;
     private TextInputEditText emailTextInputEditText;
     private TextInputEditText passwordTextInputEditText;
     //REMEMBER: Buttons has to be public yo be able to use in class MyAsyncTask
@@ -35,11 +47,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailTextInputEditText = (TextInputEditText) findViewById(R.id.emailTextInputEditText);
-        passwordTextInputEditText = (TextInputEditText) findViewById(R.id.passwordTextInputEditText);
-         logInButton = (Button) findViewById(R.id.logInButton);
-        signUpButton = (Button) findViewById(R.id.signUpButton);
-        guestButton = (Button) findViewById(R.id.guestButton);
+        emailAndPasswordLinearLayout = findViewById(R.id.emailAndPasswordLinearLayout);
+        logInAndSignUpLinearLayout = findViewById(R.id.logIngAndSignUpLinearLayout);
+        orAndGuestLinearLayout = findViewById(R.id.orAndGuestLinearLayout);
+        logoImageView = findViewById(R.id.loginLogoImageView);
+        emailTextInputEditText = findViewById(R.id.emailTextInputEditText);
+        passwordTextInputEditText = findViewById(R.id.passwordTextInputEditText);
+        logInButton = findViewById(R.id.logInButton);
+        signUpButton = findViewById(R.id.signUpButton);
+        guestButton = findViewById(R.id.guestButton);
+
+        startAnimation();
 
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +94,57 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void startAnimation() {
+        final Animator logo_fade_in = AnimatorInflater.loadAnimator(this, R.animator.fade_in)
+                .setDuration(2000);
+        logo_fade_in.setTarget(logoImageView);
+        final Animator emailAndPasswordLayout_fade_in = AnimatorInflater.loadAnimator(this, R.animator.fade_in)
+                .setDuration(1500);
+        emailAndPasswordLayout_fade_in.setTarget(emailAndPasswordLinearLayout);
+        final Animator logInAndSignUpLayout_fade_in = AnimatorInflater.loadAnimator(this, R.animator.fade_in)
+                .setDuration(1500);
+        logInAndSignUpLayout_fade_in.setTarget(logInAndSignUpLinearLayout);
+        final Animator orAndGuestLayout_fade_in = AnimatorInflater.loadAnimator(this, R.animator.fade_in)
+                .setDuration(1500);
+        orAndGuestLayout_fade_in.setTarget(orAndGuestLinearLayout);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            emailAndPasswordLinearLayout.setVisibility(View.INVISIBLE);
+            logInAndSignUpLinearLayout.setVisibility(View.INVISIBLE);
+            orAndGuestLinearLayout.setVisibility(View.INVISIBLE);
+
+            /*float density = getResources().getDisplayMetrics().density;
+            float aa = getResources().getDisplayMetrics().widthPixels / 2;
+            float bb = getResources().getDisplayMetrics().heightPixels / 2;
+            float a = (getResources().getDimensionPixelSize(R.dimen.width_loginLogoImageWiew) / density) / 2;
+            float b = (getResources().getDimensionPixelSize(R.dimen.height_loginLogoImageWiew) / density) / 2;
+            logoImageView.setY(bb - b);*/
+
+            final AnimatorSet animatorSet = new AnimatorSet();
+            final AnimatorSet animatorSet2 = new AnimatorSet();
+            animatorSet.play(logo_fade_in);
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
+                    logInAndSignUpLinearLayout.setVisibility(View.VISIBLE);
+                    orAndGuestLinearLayout.setVisibility(View.VISIBLE);
+                    animatorSet2.playTogether(emailAndPasswordLayout_fade_in, logInAndSignUpLayout_fade_in, orAndGuestLayout_fade_in);
+                    animatorSet2.start();
+                }
+            });
+            animatorSet.start();
+        }
+        else {
+            final AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(emailAndPasswordLayout_fade_in, logInAndSignUpLayout_fade_in, orAndGuestLayout_fade_in);
+            animatorSet.start();
+        }
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
     private class MyAsyncTask extends AsyncTask<String, String, String> {
         private JSONObject jsonResponse = null;
         private String jsonRequest = null;

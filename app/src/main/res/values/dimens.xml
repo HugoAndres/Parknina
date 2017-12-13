@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="width_loginLogoImageWiew">235dp</dimen>
+    <dimen name="height_loginLogoImageWiew">84dp</dimen>
+</resources>

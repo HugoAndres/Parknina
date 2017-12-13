@@ -67,7 +67,7 @@ public class LoggedMapsActivity extends FragmentActivity implements OnMapReadyCa
                 .addMenuItem(R.color.colorIcons, R.drawable.ic_account_box_24dp, "Parking Lot", R.color.colorIcons, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        startActivity(new Intent(LoggedMapsActivity.this, ParkingLotActivity.class));
                     }
                 })
                 .addMenuItem(R.color.colorIcons, R.drawable.ic_arrow_back_black_24dp, "Parking Ad", R.color.colorIcons, new View.OnClickListener() {
@@ -280,5 +280,13 @@ public class LoggedMapsActivity extends FragmentActivity implements OnMapReadyCa
 
             return true;
         }
+    }
+
+    public int getCurMapTypeIndex() {
+        return curMapTypeIndex;
+    }
+
+    public void setCurMapTypeIndex(int curMapTypeIndex) {
+        this.curMapTypeIndex = curMapTypeIndex;
     }
 }

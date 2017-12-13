@@ -54,13 +54,15 @@ public class GuestMapsActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.guestGoogleMap);
         mapFragment.getMapAsync(this);
 
-        final FloatingActionButton fab = new FloatingActionButton(this);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.menuFloatingActionButton);
+
+        /*final FloatingActionButton fab = new FloatingActionButton(this);
         fab.setType(FloatingActionButton.TYPE_NORMAL);
         fab.setImageResource(R.drawable.ic_add_24dp);
         fab.setColorPressedResId(R.color.colorPrimaryLight);
         fab.setColorNormalResId(R.color.colorPrimary);
         fab.setColorRippleResId(R.color.white);
-        fab.setShadow(true);
+        fab.setShadow(true);*/
 
         new SpringFloatingActionMenu.Builder(this)
                 .fab(fab)
